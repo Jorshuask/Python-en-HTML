@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interacción con Python y HTML</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333333;
+        }
+        label, input, button {
+            display: block;
+            margin: 10px auto;
+            font-size: 1.2em;
+        }
+        input, button {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            width: 80%;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 1.4em;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interacción con Python y HTML</h1>
+        <label for="nombre">Ingrese su nombre:</label>
+        <input type="text" id="nombre" placeholder="Tu nombre" />
+        <button id="enviar">Enviar</button>
+        <div id="resultado"></div>
+    </div>
+
+    <py-script>
+        from pyodide.ffi import create_proxy
+        from pyscript import Element
+
+        def saludar(event):
+            nombre = Element('nombre').element.value
+            mensaje = f"Hola, {nombre}!"
+            Element('resultado').write(mensaje)
+
+        saludar_proxy = create_proxy(saludar)
+        Element('enviar').element.addEventListener('click', saludar_proxy)
+    </py-script>
+</body>
+</html>
